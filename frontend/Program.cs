@@ -23,6 +23,7 @@ namespace frontend
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://*:80"); // Escuchar en el puerto 80
                 });
     }
 }
