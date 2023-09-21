@@ -1,39 +1,70 @@
 @page
 @model IndexModel
-@{
-    ViewData["Title"] = ".NET Pizza Co.";
-}
 
-<div class="text-center">
-    <h1 class="display-4">Let's Eat Some Pizza!</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>GIF Extractor</title>
+    <!-- Estilos CSS aquí -->
+</head>
+<body>
+    <div class="header">
+        <h1><a href="/">GIF Extractor</a></h1>
+    </div>
 
-Our pizzas are hot, hot, hot!!
+    <section>
+        <form method="get">
+            <input class="text" type="text" name="url" placeholder="ingresa el nombre del gif" value="@Model.Url">
+            <input class="button" type="submit" value="Extraer Gif">
+        </form>
+    </section>
 
-<div style="color: #D8000C; background-color: #FFBABA">
-  @Model.ErrorMessage
-</div> 
-<h1>Hola</h1>
-<table class="table">
-   <thead>
-      <tr>
-         <th>Pizza Name</th>
-         <th>Ingredients</th>
-         <th>Cost</th>
-         <th>In Stock</th>
-      </tr>
-   </thead>
-   <tbody>
-      @foreach (var pizza in @Model.Pizzas)
-      {
-         <tr>
-            <td>@pizza.PizzaName</td>
-            <td>@pizza.Ingredients</td>
-            <td>$@pizza.Cost</td>
-            <td>@pizza.InStock</td>
-         </tr>
-      }
-   </tbody>
-</table>
+    @if (!string.IsNullOrEmpty(Model.Error))
+    {
+        <section>
+            <h2>Error</h2>
+            <p class="error">@Model.Error</p>
+        </section>
+    }
 
+    @if (!string.IsNullOrEmpty(Model.Url) && string.IsNullOrEmpty(Model.Error))
+    {
+        <section>
+            <h2>Detalles</h2>
+            <table>
+                <tr>
+                    <th>GIF</th>
+                    <th># Links</th>
+                </tr>
+                @foreach (var kvp in Model.DomainCounts)
+                {
+                    <tr>
+                        <td>@kvp.Key</td>
+                        <td>@kvp.Value</td>
+                    </tr>
+                }
+            </table>
+        </section>
+
+        <section>
+            <h2>GIF</h2>
+            <img src="@Model.Links.FirstOrDefault().Text" width="500" height="500">
+            @foreach (var link in Model.Links)
+            {
+                <img src="@link.Href">
+            }
+        </section>
+
+        <section>
+            <h2>Link</h2>
+            <ul>
+                @foreach (var link in Model.Links)
+                {
+                    <li><a href="@link.Href">LINK DEL GIF</a></li>
+                }
+            </ul>
+        </section>
+    }
+</body>
+</html>
